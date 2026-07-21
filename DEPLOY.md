@@ -68,11 +68,23 @@ Em **Environment variables** (todas opcionais):
 
 | Variável | Padrão | Observação |
 |---|---|---|
-| `PORT_HOST` | `3200` | porta exposta no servidor |
 | `IMAGE_TAG` | `latest` | use uma tag fixa para travar a versão |
 | `N8N_WEBHOOK_URL` | webhook atual | destino do formulário |
 
 Clique em **Deploy the stack**.
+
+### Antes de subir: DNS
+
+O certificado é emitido por TLS challenge, então os dois nomes precisam
+**já estar apontando para o servidor** no momento do deploy. Caso contrário o
+Let's Encrypt falha — e ele limita a 5 falhas por hora por domínio.
+
+```
+vsgrowth.com.br       A   <IP do servidor>
+www.vsgrowth.com.br   A   <IP do servidor>
+```
+
+Confira com `dig +short vsgrowth.com.br` antes de dar deploy.
 
 ## 5. Atualizar depois de uma alteração
 
@@ -84,13 +96,14 @@ Clique em **Deploy the stack**.
 
 ## Notas
 
-**Porta.** O container escuta na `3000` internamente; o mapeamento é
-`PORT_HOST:3000`. Confira se a porta escolhida está livre no servidor antes de
-subir, para não conflitar com outra stack.
+**Rede e porta.** A stack **não publica porta no host**: quem atende 80/443 é o
+Traefik, que fala com o container pela rede externa `proxy`. Por isso o serviço
+precisa estar nessa rede e ter `traefik.enable=true` — o Traefik roda com
+`exposedbydefault=false`, então nada é exposto sem o opt-in explícito.
 
-**Proxy reverso.** Para servir em domínio com HTTPS, aponte seu proxy (Nginx
-Proxy Manager, Traefik, Caddy) para `vs-growth-site:3000` na mesma rede Docker,
-em vez de publicar a porta direto.
+**Domínios.** O router responde por `vsgrowth.com.br` e `www.vsgrowth.com.br`,
+ambos no mesmo certificado. Para trocar, edite a linha `traefik.http.routers.
+vsgrowth.rule` no compose.
 
 **Versionar releases.** Uma tag `v*` no git gera uma imagem com a mesma tag:
 
