@@ -1,19 +1,51 @@
-# Projeto isolado — nome próprio para não conflitar com os outros
-# stacks do Docker local (vs-dash, fin-*, supertracker, etc.)
+# Stack de produção para o Portainer, atrás do Traefik.
+# Não faz build: apenas baixa a imagem publicada pelo GitHub Actions.
+#
+# Não publica porta no host: quem expõe é o Traefik, que fala com o
+# container pela rede `proxy`.
+#
+# Variáveis opcionais no Portainer (aba Environment variables da stack):
+#   IMAGE_TAG         tag da imagem (padrão: latest)
+#   N8N_WEBHOOK_URL   destino do formulário (já tem padrão)
+
 name: vs-growth-site
 
 services:
   web:
-    build:
-      context: .
-    image: vs-growth-site:latest
+    image: ghcr.io/ocarlosvieira/vs-site:${IMAGE_TAG:-latest}
     container_name: vs-growth-site
-    ports:
-      # host 3200 -> container 3000 (3200 é a porta dedicada deste site)
-      - "3200:3000"
+    restart: unless-stopped
     environment:
       NODE_ENV: production
-      # Destino do formulário. Trocar aqui + `docker compose up -d` basta,
-      # não precisa rebuildar a imagem.
-      N8N_WEBHOOK_URL: https://n8n.vsgrowth.com.br/webhook/form-site-vs
-    restart: unless-stopped
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-https://n8n.vsgrowth.com.br/webhook/form-site-vs}
+    networks:
+      - proxy
+    labels:
+      # O Traefik roda com exposedbydefault=false, então o opt-in é obrigatório.
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+
+      - "traefik.http.routers.vsgrowth.rule=Host(`vsgrowth.com.br`) || Host(`www.vsgrowth.com.br`)"
+      - "traefik.http.routers.vsgrowth.entrypoints=websecure"
+      - "traefik.http.routers.vsgrowth.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.vsgrowth.middlewares=vsgrowth-sem-www"
+
+      # Redireciona www -> raiz (301), preservando o caminho. Evita que o
+      # Google veja os dois domínios como conteúdo duplicado.
+      # O regex só casa com www, então o domínio raiz passa direto.
+      # $$ escapa o $ para o compose não tentar interpolar.
+      - 'traefik.http.middlewares.vsgrowth-sem-www.redirectregex.regex=^https?://www\.vsgrowth\.com\.br/(.*)'
+      - "traefik.http.middlewares.vsgrowth-sem-www.redirectregex.replacement=https://vsgrowth.com.br/$${1}"
+      - "traefik.http.middlewares.vsgrowth-sem-www.redirectregex.permanent=true"
+
+      # Porta interna do container (o Next escuta na 3000).
+      - "traefik.http.services.vsgrowth.loadbalancer.server.port=3000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  proxy:
+    external: true

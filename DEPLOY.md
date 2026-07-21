@@ -61,8 +61,8 @@ Custom registry:
 **Stacks → Add stack**, e então uma das opções:
 
 - **Repository**: aponte para `https://github.com/ocarlosvieira/vs-site`, com
-  Compose path `docker-compose.prod.yml`
-- **Web editor**: cole o conteúdo de [`docker-compose.prod.yml`](docker-compose.prod.yml)
+  Compose path `docker-compose.yml` (o padrão)
+- **Web editor**: cole o conteúdo de [`docker-compose.yml`](docker-compose.yml)
 
 Em **Environment variables** (todas opcionais):
 

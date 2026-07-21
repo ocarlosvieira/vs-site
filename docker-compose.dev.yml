@@ -1,0 +1,19 @@
+# Projeto isolado — nome próprio para não conflitar com os outros
+# stacks do Docker local (vs-dash, fin-*, supertracker, etc.)
+name: vs-growth-site
+
+services:
+  web:
+    build:
+      context: .
+    image: vs-growth-site:latest
+    container_name: vs-growth-site
+    ports:
+      # host 3200 -> container 3000 (3200 é a porta dedicada deste site)
+      - "3200:3000"
+    environment:
+      NODE_ENV: production
+      # Destino do formulário. Trocar aqui + `docker compose up -d` basta,
+      # não precisa rebuildar a imagem.
+      N8N_WEBHOOK_URL: https://n8n.vsgrowth.com.br/webhook/form-site-vs
+    restart: unless-stopped
