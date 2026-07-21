@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
@@ -46,8 +47,16 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="font-display text-xl font-bold text-text-primary">
-          VS <span className="text-accent-blue">Growth</span>
+        <a href="#" className="flex items-center" aria-label="VS Growth, ir para o topo">
+          <Image
+            src="/img/vs-logo.png"
+            alt="VS Growth"
+            width={887}
+            height={132}
+            priority
+            unoptimized
+            className="h-7 w-auto"
+          />
         </a>
 
         {/* Desktop Links */}

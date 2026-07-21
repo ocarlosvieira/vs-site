@@ -1,3 +1,4 @@
+import Image from "next/image";
 // O lucide v1 não traz ícones de marca (removidos por questão de trademark),
 // então usamos equivalentes genéricos.
 import { AtSign, MessageCircle, Globe } from "lucide-react";
@@ -27,9 +28,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* Marca */}
           <div>
-            <div className="font-display text-2xl font-bold text-text-primary">
-              VS <span className="text-accent-blue">Growth</span>
-            </div>
+            <Image
+              src="/img/vs-logo.png"
+              alt="VS Growth"
+              width={887}
+              height={132}
+              unoptimized
+              className="h-9 w-auto"
+            />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-secondary">
               Planejamos e construímos toda a estrutura de marketing digital que
               sua empresa precisa para crescer com consistência.
