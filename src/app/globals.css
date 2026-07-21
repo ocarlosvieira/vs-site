@@ -75,6 +75,19 @@ body {
   font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
 }
 
+/* As animações de entrada deslocam elementos no eixo X (framer-motion,
+   initial x: ±40). Enquanto a seção não entra na viewport, esse
+   deslocamento alarga a página e cria scroll horizontal no mobile — o que
+   revela o vídeo fixo da hero na lateral direita.
+
+   `clip` recorta sem criar contexto de rolagem (ao contrário de `hidden`),
+   então o position: sticky da hero continua funcionando. O seletor pega só
+   os filhos diretos de <main>: a hero é uma <div>, não uma <section>, e
+   fica intocada. */
+main > section {
+  overflow-x: clip;
+}
+
 /* ---------------------------------------------------------------
    Fundos de seção
    Mesmo gradiente radial (navy -> quase-preto) com o ponto focal
