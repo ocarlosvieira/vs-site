@@ -152,6 +152,35 @@ main > section {
   );
 }
 
+/* ---------------------------------------------------------------
+   Carrossel de logos no mobile
+   A trilha é renderizada com a lista duplicada; deslocar -50% faz o
+   loop emendar sem salto. Pausa ao tocar, para dar tempo de ver a cor.
+   --------------------------------------------------------------- */
+@keyframes marquee-clientes {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-clientes {
+  animation: marquee-clientes 24s linear infinite;
+}
+
+.marquee-clientes-wrapper:hover .marquee-clientes,
+.marquee-clientes-wrapper:active .marquee-clientes {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-clientes {
+    animation: none;
+  }
+}
+
 /* Orb de brilho ciano usado como detalhe decorativo */
 .glow-orb-cyan {
   background: radial-gradient(48% 48%, #6ce8fd 0%, transparent 100%);
