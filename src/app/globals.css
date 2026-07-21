@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+:root {
+  /* Backgrounds — base navy quase-preta */
+  --bg-primary: #00040A;
+  --bg-secondary: #000A18;
+  /* Cards em vidro: alpha de branco sobre o fundo radial da seção */
+  --bg-card: rgba(255, 255, 255, 0.045);
+  --bg-card-hover: rgba(255, 255, 255, 0.075);
+  --bg-elevated: #001638;
+
+  /* Accent — rampa azul/ciano */
+  --accent-blue: #0080FF;
+  --accent-blue-light: #A4C5FF;
+  --accent-blue-dark: #0068CF;
+  --accent-sky: #2DABFE;
+  --accent-cyan: #51D9FE;
+  --accent-cyan-light: #6CE8FD;
+  --accent-periwinkle: #A4C5FF;
+
+  /* Aliases legados — mantidos para não quebrar componentes que ainda
+     referenciam os nomes antigos; apontam para a rampa azul/ciano. */
+  --accent-orange: #51D9FE;
+  --accent-orange-light: #6CE8FD;
+  --accent-purple: #2DABFE;
+
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: #A8B5C7;
+  --text-muted: #6B7C93;
+
+  /* Border — alphas de branco sobre o fundo escuro */
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.14);
+
+  /* Gradiente assinatura */
+  --gradient-brand: linear-gradient(
+    90deg,
+    #0068cf 0%,
+    #0080ff 51.5%,
+    #51d9fe 100%
+  );
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-blue-light: var(--accent-blue-light);
+  --color-accent-blue-dark: var(--accent-blue-dark);
+  --color-accent-sky: var(--accent-sky);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-cyan-light: var(--accent-cyan-light);
+  --color-accent-periwinkle: var(--accent-periwinkle);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-orange-light: var(--accent-orange-light);
+  --color-accent-purple: var(--accent-purple);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-default: var(--border-default);
+  --color-border-subtle: var(--border-subtle);
+  --font-display: var(--font-inter);
+  --font-body: var(--font-dm-sans);
+}
+
+body {
+  /* As seções trazem o próprio fundo radial (ver .section-bg-*); aqui fica
+     só a cor base, que aparece nas emendas. */
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   Fundos de seção
+   Mesmo gradiente radial (navy -> quase-preto) com o ponto focal
+   deslocado em cada seção. É o que cria a variação orgânica de
+   profundidade de uma seção para a outra.
+   --------------------------------------------------------------- */
+.section-bg-1,
+.section-bg-2,
+.section-bg-3,
+.section-bg-4,
+.section-bg-5,
+.section-bg-6 {
+  background-color: var(--bg-primary);
+  background-repeat: no-repeat;
+}
+
+.section-bg-1 {
+  background-image: radial-gradient(
+    79.24% 61.01% at 21.8% 17.1%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+.section-bg-2 {
+  background-image: radial-gradient(
+    79.24% 61.01% at 64.2% 96.2%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+.section-bg-3 {
+  background-image: radial-gradient(
+    79.24% 61.01% at 16.6% 32.1%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+.section-bg-4 {
+  background-image: radial-gradient(
+    79.24% 55% at 51.2% 21.7%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+.section-bg-5 {
+  background-image: radial-gradient(
+    79.24% 100% at 11.6% 68.3%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+.section-bg-6 {
+  background-image: radial-gradient(
+    79.24% 61.01% at 14.9% 43%,
+    #001638 0%,
+    #000206 100%
+  );
+}
+
+/* Orb de brilho ciano usado como detalhe decorativo */
+.glow-orb-cyan {
+  background: radial-gradient(48% 48%, #6ce8fd 0%, transparent 100%);
+}
+
+/* Force Inter on all display/heading elements */
+.font-display,
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+/* Glow effects */
+.glow-blue {
+  box-shadow: 0 0 60px rgba(0, 128, 255, 0.18), 0 0 120px rgba(81, 217, 254, 0.08);
+}
+
+.glow-orange {
+  box-shadow: 0 0 60px rgba(81, 217, 254, 0.15);
+}
+
+/* Glass effect — alphas de branco + blur, como na referência */
+.glass {
+  background-image: linear-gradient(
+    267deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Brilho superior sutil aplicado no topo dos cards */
+.sheen-top {
+  position: relative;
+}
+
+.sheen-top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0) 52%
+  );
+}
+
+/* Gradient text — gradiente assinatura */
+.gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hero 3D Perspective Grid */
+.hero-grid-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  perspective: 400px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-grid {
+  position: absolute;
+  bottom: 0;
+  left: -50%;
+  right: -50%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 128, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 128, 255, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: rotateX(60deg);
+  transform-origin: bottom center;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 100%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 100%, black 20%, transparent 70%);
+}
+
+/* Hero italic serif accent */
+.hero-italic-accent {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-style: italic;
+  background: linear-gradient(135deg, #0068cf 0%, #0080ff 50%, #51d9fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+

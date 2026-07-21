@@ -1,0 +1,25 @@
+# Stack de produção para o Portainer.
+# Não faz build: apenas baixa a imagem que o GitHub Actions publicou.
+#
+# Variáveis opcionais no Portainer (aba Environment variables da stack):
+#   IMAGE_TAG         tag da imagem (padrão: latest)
+#   PORT_HOST         porta exposta no servidor (padrão: 3200)
+#   N8N_WEBHOOK_URL   destino do formulário (já tem padrão)
+
+name: vs-growth-site
+
+services:
+  web:
+    image: ghcr.io/ocarlosvieira/vs-site:${IMAGE_TAG:-latest}
+    container_name: vs-growth-site
+    restart: unless-stopped
+    ports:
+      - "${PORT_HOST:-3200}:3000"
+    environment:
+      NODE_ENV: production
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-https://n8n.vsgrowth.com.br/webhook/form-site-vs}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

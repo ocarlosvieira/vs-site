@@ -1,0 +1,13 @@
+# Normaliza quebras de linha: o repositório guarda sempre LF, mesmo commitando
+# do Windows. Evita diffs falsos e garante consistência no build (Linux).
+* text=auto eol=lf
+
+# Binários: não mexer.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.mp4 binary
+*.woff binary
+*.woff2 binary
